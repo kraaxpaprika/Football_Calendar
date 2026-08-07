@@ -276,6 +276,57 @@
     .kick-time{font-size:7px;}
     .home-badge{max-width:28px;}
   }
+
+  .day-cell.match, .match-half{ cursor:pointer; }
+
+  .modal-overlay{
+    display:none;
+    position:fixed; inset:0;
+    background: rgba(4,9,14,0.72);
+    align-items:center; justify-content:center;
+    padding:20px;
+    z-index:50;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-card{
+    position:relative;
+    background: linear-gradient(165deg, #14283b, var(--pitch-deep));
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:32px 28px 26px;
+    max-width:360px; width:100%;
+    text-align:center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .modal-close{
+    position:absolute; top:10px; right:12px;
+    background:none; border:none; color: rgba(243,237,225,0.6);
+    font-size:22px; line-height:1; cursor:pointer;
+    padding:4px 8px;
+  }
+  .modal-close:hover{ color: var(--chalk); }
+  .modal-crests{
+    display:flex; align-items:center; justify-content:center;
+    gap:18px; margin-bottom:16px;
+  }
+  .modal-crests img{ width:56px; height:56px; object-fit:contain; }
+  .modal-crests span{
+    font-family:'Archivo Black', sans-serif;
+    color: rgba(243,237,225,0.35); font-size:18px;
+  }
+  .modal-teams{
+    font-family:'Archivo Black', sans-serif;
+    text-transform:uppercase;
+    font-size:20px; line-height:1.25;
+    margin-bottom:14px;
+  }
+  .modal-meta{
+    font-family:'Space Mono', monospace;
+    font-size:12px; letter-spacing:0.06em;
+    color: rgba(243,237,225,0.65);
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .modal-meta b{ color: var(--gold); }
 </style>
 </head>
 <body>
@@ -308,6 +359,15 @@
   <footer id="footer">
     Cargando última actualización&hellip;
   </footer>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card" id="modalCard">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar">&times;</button>
+    <div class="modal-crests" id="modalCrests"></div>
+    <div class="modal-teams" id="modalTeams"></div>
+    <div class="modal-meta" id="modalMeta"></div>
+  </div>
 </div>
 
 <script>
@@ -427,6 +487,8 @@ function renderCalendar(){
     tip.textContent = (TEAM_NAMES[fixture.home]||fixture.home) + " vs " + (TEAM_NAMES[fixture.away]||fixture.away);
     half.appendChild(tip);
 
+    half.onclick = ()=> openMatchModal(fixture);
+
     return half;
   }
 
@@ -475,6 +537,8 @@ function renderCalendar(){
       tip.className='opp-name';
       tip.textContent = (TEAM_NAMES[fixture.home]||fixture.home) + " vs " + (TEAM_NAMES[fixture.away]||fixture.away);
       cell.appendChild(tip);
+
+      cell.onclick = ()=> openMatchModal(fixture);
     } else if(dayFixtures.length>1){
       dayFixtures.forEach(fixture=>{
         cell.appendChild(buildHalf(fixture));
@@ -489,6 +553,51 @@ function renderAll(){
   renderMonthTabs();
   renderCalendar();
 }
+
+function openMatchModal(fixture){
+  const homeName = TEAM_NAMES[fixture.home] || fixture.home;
+  const awayName = TEAM_NAMES[fixture.away] || fixture.away;
+
+  const crests = document.getElementById('modalCrests');
+  crests.innerHTML = "";
+  const homeImg = document.createElement('img');
+  homeImg.src = logoSrc(fixture.home);
+  const vs = document.createElement('span');
+  vs.textContent = 'VS';
+  const awayImg = document.createElement('img');
+  awayImg.src = logoSrc(fixture.away);
+  crests.appendChild(homeImg);
+  crests.appendChild(vs);
+  crests.appendChild(awayImg);
+
+  document.getElementById('modalTeams').textContent = homeName + ' — ' + awayName;
+
+  const d = new Date(fixture.date + 'T00:00:00');
+  const dateFormatted = new Intl.DateTimeFormat('es-ES', {
+    weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
+  }).format(d);
+  const timeLine = fixture.time === 'TBD' ? 'Hora por confirmar' : ('Hora: ' + fixture.time + ' (Madrid)');
+
+  document.getElementById('modalMeta').innerHTML =
+    `<div>${dateFormatted}</div>` +
+    `<div><b>${timeLine}</b></div>` +
+    `<div>${fixture.comp === 'LALIGA' ? 'LaLiga EA Sports' : fixture.comp}</div>` +
+    (fixture.manual ? '<div>★ Añadido manualmente</div>' : '');
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeMatchModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+document.getElementById('modalClose').onclick = closeMatchModal;
+document.getElementById('modalOverlay').onclick = (e)=>{
+  if(e.target.id === 'modalOverlay') closeMatchModal();
+};
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') closeMatchModal();
+});
 
 document.querySelectorAll('.filter-btn').forEach(btn=>{
   btn.onclick = ()=>{ activeTeam = btn.dataset.team; renderAll(); };
