@@ -279,6 +279,27 @@
 
   .day-cell.match, .match-half{ cursor:pointer; }
 
+  .day-cell.match.played, .match-half.played{
+    filter: grayscale(0.85);
+    opacity: 0.5;
+  }
+  .day-cell.match.played:hover, .match-half.played:hover{
+    opacity: 0.75;
+  }
+  .played-badge{
+    position:absolute; top:4px; left:4px;
+    width:16px; height:16px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; line-height:1;
+    background: rgba(8,19,29,0.85); color: var(--chalk);
+    border-radius:50%;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
+    z-index:4;
+  }
+  .match-half .played-badge{
+    width:12px; height:12px; font-size:8px; top:2px; left:2px;
+  }
+
   .modal-overlay{
     display:none;
     position:fixed; inset:0;
@@ -440,6 +461,14 @@ function renderMonthTabs(){
   });
 }
 
+function todayMadridStr(){
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid' }).format(new Date());
+}
+
+function isPastFixture(fixture){
+  return fixture.date < todayMadridStr();
+}
+
 function renderCalendar(){
   const mo = MONTHS[activeMonthIdx];
   document.getElementById('monthTitle').textContent = mo.label;
@@ -468,7 +497,7 @@ function renderCalendar(){
 
   function buildHalf(fixture){
     const half = document.createElement('div');
-    half.className='match-half';
+    half.className='match-half' + (isPastFixture(fixture) ? ' played' : '');
     half.dataset.home = fixture.home;
 
     const crestFill = document.createElement('div');
@@ -492,6 +521,13 @@ function renderCalendar(){
       half.appendChild(star);
     }
 
+    if(isPastFixture(fixture)){
+      const played = document.createElement('div');
+      played.className='played-badge';
+      played.textContent = '✓';
+      half.appendChild(played);
+    }
+
     const time = document.createElement('div');
     time.className='kick-time';
     time.textContent = fixture.time === "TBD" ? "S/C" : fixture.time;
@@ -511,7 +547,8 @@ function renderCalendar(){
     const dateStr = mo.y + "-" + String(mo.m).padStart(2,'0') + "-" + String(d).padStart(2,'0');
     const cell = document.createElement('div');
     const dayFixtures = fxByDate[dateStr] || [];
-    cell.className = 'day-cell' + (dayFixtures.length ? ' match' : '') + (dayFixtures.length>1 ? ' multi' : '');
+    cell.className = 'day-cell' + (dayFixtures.length ? ' match' : '') + (dayFixtures.length>1 ? ' multi' : '') +
+      (dayFixtures.length===1 && isPastFixture(dayFixtures[0]) ? ' played' : '');
     const num = document.createElement('div');
     num.className='day-num';
     num.textContent = d;
@@ -541,6 +578,13 @@ function renderCalendar(){
         star.className='other-badge';
         star.textContent = '★';
         cell.appendChild(star);
+      }
+
+      if(isPastFixture(fixture)){
+        const played = document.createElement('div');
+        played.className='played-badge';
+        played.textContent = '✓';
+        cell.appendChild(played);
       }
 
       const time = document.createElement('div');
@@ -597,7 +641,8 @@ function openMatchModal(fixture){
     `<div>${dateFormatted}</div>` +
     `<div><b>${timeLine}</b></div>` +
     `<div>${fixture.comp === 'LALIGA' ? 'LaLiga EA Sports' : fixture.comp}</div>` +
-    (fixture.manual ? '<div>★ Añadido manualmente</div>' : '');
+    (fixture.manual ? '<div>★ Añadido manualmente</div>' : '') +
+    (isPastFixture(fixture) ? '<div>✓ Partido finalizado</div>' : '');
 
   document.getElementById('modalOverlay').classList.add('open');
 }
