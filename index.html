@@ -392,8 +392,23 @@ const MONTHS = [
   {y:2027,m:5,label:"Mayo 2027",short:"MAY"},
 ];
 
+function currentMonthIdx(){
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Madrid', year: 'numeric', month: 'numeric'
+  }).formatToParts(new Date());
+  const y = Number(parts.find(p => p.type === 'year').value);
+  const m = Number(parts.find(p => p.type === 'month').value);
+
+  const idx = MONTHS.findIndex(mo => mo.y === y && mo.m === m);
+  if(idx !== -1) return idx;
+
+  const first = MONTHS[0], last = MONTHS[MONTHS.length - 1];
+  if(y < first.y || (y === first.y && m < first.m)) return 0;
+  return MONTHS.length - 1;
+}
+
 let activeTeam = "all";
-let activeMonthIdx = 0;
+let activeMonthIdx = currentMonthIdx();
 
 function fixturesForMonth(y,m){
   return FIXTURES.filter(f=>{
