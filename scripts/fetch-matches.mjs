@@ -88,13 +88,23 @@ function toFixture(match) {
       }).format(utc)
     : "TBD";
 
-  return {
+  const fixture = {
     date,
     time,
     home: keyFor(match.homeTeam.name),
     away: keyFor(match.awayTeam.name),
     comp: "LALIGA",
   };
+
+  if (
+    match.status === "FINISHED" &&
+    match.score?.fullTime?.home != null &&
+    match.score?.fullTime?.away != null
+  ) {
+    fixture.score = `${match.score.fullTime.home}-${match.score.fullTime.away}`;
+  }
+
+  return fixture;
 }
 
 async function main() {

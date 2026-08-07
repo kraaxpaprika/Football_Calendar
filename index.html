@@ -542,7 +542,7 @@ function renderCalendar(){
 
     const time = document.createElement('div');
     time.className='kick-time';
-    time.textContent = fixture.time === "TBD" ? "S/C" : fixture.time;
+    time.textContent = fixture.score ? fixture.score : (fixture.time === "TBD" ? "S/C" : fixture.time);
     half.appendChild(time);
 
     const tip = document.createElement('div');
@@ -604,7 +604,7 @@ function renderCalendar(){
 
       const time = document.createElement('div');
       time.className='kick-time';
-      time.textContent = fixture.time === "TBD" ? "S/C" : fixture.time;
+      time.textContent = fixture.score ? fixture.score : (fixture.time === "TBD" ? "S/C" : fixture.time);
       cell.appendChild(time);
 
       const tip = document.createElement('div');
@@ -650,7 +650,9 @@ function openMatchModal(fixture){
   const dateFormatted = new Intl.DateTimeFormat('es-ES', {
     weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'
   }).format(d);
-  const timeLine = fixture.time === 'TBD' ? 'Hora por confirmar' : ('Hora: ' + fixture.time + ' (Madrid)');
+  const timeLine = fixture.score
+    ? ('Resultado: ' + fixture.score)
+    : (fixture.time === 'TBD' ? 'Hora por confirmar' : ('Hora: ' + fixture.time + ' (Madrid)'));
 
   document.getElementById('modalMeta').innerHTML =
     `<div>${dateFormatted}</div>` +
