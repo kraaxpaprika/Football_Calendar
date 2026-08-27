@@ -1,43 +1,292 @@
 [
-  {"date": "2026-08-29", "time": "17:00", "home": "levante", "away": "betis", "comp": "LALIGA"},
-  {"date": "2026-09-13", "time": "TBD", "home": "levante", "away": "barcelona", "comp": "LALIGA"},
-  {"date": "2026-09-16", "time": "TBD", "home": "levante", "away": "athletic", "comp": "LALIGA"},
-  {"date": "2026-10-11", "time": "TBD", "home": "levante", "away": "sevilla", "comp": "LALIGA"},
-  {"date": "2026-11-01", "time": "TBD", "home": "levante", "away": "atlmadrid", "comp": "LALIGA"},
-  {"date": "2026-11-22", "time": "TBD", "home": "levante", "away": "elche", "comp": "LALIGA"},
-  {"date": "2026-11-29", "time": "TBD", "home": "levante", "away": "racingsantander", "comp": "LALIGA"},
-  {"date": "2026-12-13", "time": "TBD", "home": "levante", "away": "alaves", "comp": "LALIGA"},
-  {"date": "2027-01-03", "time": "TBD", "home": "levante", "away": "valencia", "comp": "LALIGA"},
-  {"date": "2027-01-17", "time": "TBD", "home": "levante", "away": "espanyol", "comp": "LALIGA"},
-  {"date": "2027-01-31", "time": "TBD", "home": "levante", "away": "realsociedad", "comp": "LALIGA"},
-  {"date": "2027-02-14", "time": "TBD", "home": "levante", "away": "malaga", "comp": "LALIGA"},
-  {"date": "2027-02-28", "time": "TBD", "home": "levante", "away": "deportivocoruna", "comp": "LALIGA"},
-  {"date": "2027-03-21", "time": "TBD", "home": "levante", "away": "osasuna", "comp": "LALIGA"},
-  {"date": "2027-04-04", "time": "TBD", "home": "levante", "away": "rayovallecano", "comp": "LALIGA"},
-  {"date": "2027-04-18", "time": "TBD", "home": "levante", "away": "villarreal", "comp": "LALIGA"},
-  {"date": "2027-05-02", "time": "TBD", "home": "levante", "away": "realmadrid", "comp": "LALIGA"},
-  {"date": "2027-05-16", "time": "TBD", "home": "levante", "away": "getafe", "comp": "LALIGA"},
-  {"date": "2027-05-30", "time": "TBD", "home": "levante", "away": "celta", "comp": "LALIGA"},
-  {"date": "2026-09-05", "time": "21:00", "home": "villarreal", "away": "deportivocoruna", "comp": "LALIGA"},
-  {"date": "2026-09-13", "time": "TBD", "home": "villarreal", "away": "betis", "comp": "LALIGA"},
-  {"date": "2026-09-20", "time": "TBD", "home": "villarreal", "away": "levante", "comp": "LALIGA"},
-  {"date": "2026-10-18", "time": "TBD", "home": "villarreal", "away": "elche", "comp": "LALIGA"},
-  {"date": "2026-11-01", "time": "TBD", "home": "villarreal", "away": "espanyol", "comp": "LALIGA"},
-  {"date": "2026-11-08", "time": "TBD", "home": "villarreal", "away": "getafe", "comp": "LALIGA"},
-  {"date": "2026-12-06", "time": "TBD", "home": "villarreal", "away": "realsociedad", "comp": "LALIGA"},
-  {"date": "2026-12-13", "time": "TBD", "home": "villarreal", "away": "rayovallecano", "comp": "LALIGA"},
-  {"date": "2027-01-03", "time": "TBD", "home": "villarreal", "away": "sevilla", "comp": "LALIGA"},
-  {"date": "2027-01-17", "time": "TBD", "home": "villarreal", "away": "alaves", "comp": "LALIGA"},
-  {"date": "2027-01-31", "time": "TBD", "home": "villarreal", "away": "racingsantander", "comp": "LALIGA"},
-  {"date": "2027-02-14", "time": "TBD", "home": "villarreal", "away": "barcelona", "comp": "LALIGA"},
-  {"date": "2027-02-21", "time": "TBD", "home": "villarreal", "away": "valencia", "comp": "LALIGA"},
-  {"date": "2027-03-07", "time": "TBD", "home": "villarreal", "away": "realmadrid", "comp": "LALIGA"},
-  {"date": "2027-03-21", "time": "TBD", "home": "villarreal", "away": "malaga", "comp": "LALIGA"},
-  {"date": "2027-04-11", "time": "TBD", "home": "villarreal", "away": "athletic", "comp": "LALIGA"},
-  {"date": "2027-04-21", "time": "TBD", "home": "villarreal", "away": "atlmadrid", "comp": "LALIGA"},
-  {"date": "2027-05-09", "time": "TBD", "home": "villarreal", "away": "celta", "comp": "LALIGA"},
-  {"date": "2027-05-23", "time": "TBD", "home": "villarreal", "away": "osasuna", "comp": "LALIGA"},
-  {"date": "2026-08-25", "time": "21:00", "home": "valencia", "away": "betis", "comp": "LALIGA", "manual": true},
-  {"date": "2027-02-07", "time": "TBD", "home": "betis", "away": "sevilla", "comp": "LALIGA", "manual": true},
-  {"date": "2026-10-25", "time": "17:00", "home": "celta", "away": "betis", "comp": "LALIGA", "manual": true}
+  {
+    "date": "2026-08-25",
+    "time": "21:00",
+    "home": "valencia",
+    "away": "betis",
+    "comp": "LALIGA",
+    "manual": true
+  },
+  {
+    "date": "2026-08-29",
+    "time": "17:00",
+    "home": "levante",
+    "away": "betis",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-09-05",
+    "time": "21:00",
+    "home": "villarreal",
+    "away": "deportivocoruna",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-09-13",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "betis",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-09-13",
+    "time": "TBD",
+    "home": "levante",
+    "away": "barcelona",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-09-16",
+    "time": "TBD",
+    "home": "levante",
+    "away": "athletic",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-09-20",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "levante",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-10-11",
+    "time": "TBD",
+    "home": "levante",
+    "away": "sevilla",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-10-18",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "elche",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-10-25",
+    "time": "17:00",
+    "home": "celta",
+    "away": "betis",
+    "comp": "LALIGA",
+    "manual": true
+  },
+  {
+    "date": "2026-11-01",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "espanyol",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-11-01",
+    "time": "TBD",
+    "home": "levante",
+    "away": "atlmadrid",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-11-08",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "getafe",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-11-22",
+    "time": "TBD",
+    "home": "levante",
+    "away": "elche",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-11-29",
+    "time": "TBD",
+    "home": "levante",
+    "away": "racingsantander",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-12-06",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "realsociedad",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-12-13",
+    "time": "TBD",
+    "home": "levante",
+    "away": "alaves",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2026-12-13",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "rayovallecano",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-01-03",
+    "time": "TBD",
+    "home": "levante",
+    "away": "valencia",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-01-03",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "sevilla",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-01-17",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "alaves",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-01-17",
+    "time": "TBD",
+    "home": "levante",
+    "away": "espanyol",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-01-31",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "racingsantander",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-01-31",
+    "time": "TBD",
+    "home": "levante",
+    "away": "realsociedad",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-02-07",
+    "time": "TBD",
+    "home": "betis",
+    "away": "sevilla",
+    "comp": "LALIGA",
+    "manual": true
+  },
+  {
+    "date": "2027-02-14",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "barcelona",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-02-14",
+    "time": "TBD",
+    "home": "levante",
+    "away": "malaga",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-02-21",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "valencia",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-02-28",
+    "time": "TBD",
+    "home": "levante",
+    "away": "deportivocoruna",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-03-07",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "realmadrid",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-03-21",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "malaga",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-03-21",
+    "time": "TBD",
+    "home": "levante",
+    "away": "osasuna",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-04-04",
+    "time": "TBD",
+    "home": "levante",
+    "away": "rayovallecano",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-04-11",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "athletic",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-04-18",
+    "time": "TBD",
+    "home": "levante",
+    "away": "villarreal",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-04-21",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "atlmadrid",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-05-02",
+    "time": "TBD",
+    "home": "levante",
+    "away": "realmadrid",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-05-09",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "celta",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-05-16",
+    "time": "TBD",
+    "home": "levante",
+    "away": "getafe",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-05-23",
+    "time": "TBD",
+    "home": "villarreal",
+    "away": "osasuna",
+    "comp": "LALIGA"
+  },
+  {
+    "date": "2027-05-30",
+    "time": "TBD",
+    "home": "levante",
+    "away": "celta",
+    "comp": "LALIGA"
+  }
 ]
