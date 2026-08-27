@@ -208,6 +208,22 @@
     letter-spacing:0.02em;
   }
 
+  /* Final scores read at a glance, floated just above the crest. */
+  .final-score{
+    bottom:auto; right:auto;
+    top:16%; left:50%; transform:translateX(-50%);
+    font-size:13px; font-weight:700; letter-spacing:0.06em; line-height:1;
+    color:#fff;
+    background: rgba(8,19,29,0.95);
+    border:1px solid rgba(255,255,255,0.45);
+    padding:2px 7px; border-radius:4px;
+    z-index:4;
+  }
+  .day-cell.match[data-home="villarreal"] .final-score{
+    color:#fff;
+    background: rgba(8,19,29,0.95);
+  }
+
   .opp-name{
     display:none;
   }
@@ -268,6 +284,12 @@
     color: rgba(20,15,0,0.75);
     background: rgba(255,255,255,0.35);
   }
+  .match-half .kick-time.final-score,
+  .match-half[data-home="villarreal"] .kick-time.final-score{
+    font-size:9px; padding:1px 4px;
+    top:8%; bottom:auto; right:auto; left:50%;
+    color:#fff; background: rgba(8,19,29,0.95);
+  }
   .match-half[data-home="villarreal"] .home-badge{
     background: rgba(20,15,0,0.75);
   }
@@ -275,6 +297,18 @@
   @media (max-width: 560px){
     .kick-time{font-size:7px;}
     .home-badge{max-width:28px;}
+    .final-score,
+    .match-half .kick-time.final-score,
+    .match-half[data-home="villarreal"] .kick-time.final-score{
+      top:auto; left:auto; transform:none;
+      bottom:2px; right:2px;
+      font-size:8px; padding:0 3px;
+    }
+    /* A split day gives each match ~19px of width on a phone. */
+    .match-half .kick-time.final-score,
+    .match-half[data-home="villarreal"] .kick-time.final-score{
+      font-size:6px; padding:0 2px;
+    }
   }
 
   .day-cell.match, .match-half{ cursor:pointer; }
@@ -294,6 +328,10 @@
   .day-cell.match.played, .match-half.played{
     filter: grayscale(0.85);
     opacity: 0.5;
+  }
+  .day-cell.match.played:has(.final-score), .match-half.played:has(.final-score){
+    filter: grayscale(0.6);
+    opacity: 0.72;
   }
   .day-cell.match.played:hover, .match-half.played:hover{
     opacity: 0.75;
@@ -560,7 +598,7 @@ function renderCalendar(){
     }
 
     const time = document.createElement('div');
-    time.className='kick-time';
+    time.className = fixture.score ? 'kick-time final-score' : 'kick-time';
     time.textContent = fixture.score ? fixture.score : (fixture.time === "TBD" ? "S/C" : fixture.time);
     half.appendChild(time);
 
@@ -622,7 +660,7 @@ function renderCalendar(){
       }
 
       const time = document.createElement('div');
-      time.className='kick-time';
+      time.className = fixture.score ? 'kick-time final-score' : 'kick-time';
       time.textContent = fixture.score ? fixture.score : (fixture.time === "TBD" ? "S/C" : fixture.time);
       cell.appendChild(time);
 
