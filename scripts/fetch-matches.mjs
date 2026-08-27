@@ -17,8 +17,8 @@ if (!API_KEY) {
 }
 
 const COMPETITIONS = [
-  { code: "PD", comp: "LALIGA" }, // LaLiga
-  { code: "CL", comp: "UCL" }, // UEFA Champions League
+  { code: "PD", comp: "LALIGA", required: true }, // LaLiga
+  { code: "CL", comp: "UCL" }, // UEFA Champions League (not on every API plan)
 ];
 const SEASON = "2026";
 
@@ -148,8 +148,17 @@ function isWantedHomeGame(match, comp) {
 
 async function main() {
   const entries = [];
-  for (const { code, comp } of COMPETITIONS) {
-    const matches = await fetchMatches(code);
+  for (const { code, comp, required } of COMPETITIONS) {
+    let matches;
+    try {
+      matches = await fetchMatches(code);
+    } catch (err) {
+      // The free football-data.org tier does not cover every competition; a
+      // missing extra must not stop LaLiga from updating.
+      if (required) throw err;
+      console.warn(`Skipping ${code}: ${err.message}`);
+      continue;
+    }
     for (const match of matches) entries.push({ match, comp });
     console.log(`Fetched ${matches.length} ${code} matches.`);
   }
