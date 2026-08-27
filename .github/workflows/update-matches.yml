@@ -2,8 +2,10 @@ name: Update match fixtures
 
 on:
   schedule:
-    # 03:15 UTC every night
+    # 03:15 UTC: picks up everything played the previous evening.
     - cron: "15 3 * * *"
+    # 18:15 UTC: picks up the early kick-offs the same day.
+    - cron: "15 18 * * *"
   workflow_dispatch: {}
 
 permissions:
