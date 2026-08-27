@@ -107,6 +107,29 @@ function toFixture(match) {
   return fixture;
 }
 
+// Manual entries are typed by hand, so their date/time can drift and they never
+// carry a score. Look each one up in the API feed (a given home/away pairing
+// happens once per season) and refresh it with the official data.
+function enrichManual(manual, matches) {
+  const byPairing = new Map();
+  for (const match of matches) {
+    byPairing.set(`${keyFor(match.homeTeam.name)}|${keyFor(match.awayTeam.name)}`, match);
+  }
+
+  let enriched = 0;
+  const result = manual.map((entry) => {
+    const match = byPairing.get(`${entry.home}|${entry.away}`);
+    if (!match) {
+      console.warn(`No API match for manual fixture ${entry.home} vs ${entry.away}.`);
+      return entry;
+    }
+    enriched++;
+    return { ...toFixture(match), manual: true };
+  });
+
+  return { manual: result, enriched };
+}
+
 async function main() {
   const matches = await fetchMatches();
 
@@ -125,7 +148,9 @@ async function main() {
     // no manual matches file, that's fine
   }
 
-  const merged = [...fixtures, ...manual].sort((a, b) =>
+  const { manual: manualFixtures, enriched } = enrichManual(manual, matches);
+
+  const merged = [...fixtures, ...manualFixtures].sort((a, b) =>
     (a.date + (a.time === "TBD" ? "" : a.time)).localeCompare(
       b.date + (b.time === "TBD" ? "" : b.time)
     )
@@ -133,7 +158,10 @@ async function main() {
 
   const outPath = path.join(ROOT, "data", "matches.json");
   await writeFile(outPath, JSON.stringify(merged, null, 2) + "\n", "utf-8");
-  console.log(`Wrote ${fixtures.length} API fixtures + ${manual.length} manual matches to ${outPath}`);
+  console.log(
+    `Wrote ${fixtures.length} API fixtures + ${manual.length} manual matches ` +
+      `(${enriched} refreshed from the API) to ${outPath}`
+  );
 
   const metaPath = path.join(ROOT, "data", "meta.json");
   await writeFile(
