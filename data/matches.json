@@ -5,6 +5,7 @@
     "home": "valencia",
     "away": "betis",
     "comp": "LALIGA",
+    "score": "0-1",
     "manual": true
   },
   {
@@ -65,7 +66,7 @@
   },
   {
     "date": "2026-10-25",
-    "time": "17:00",
+    "time": "TBD",
     "home": "celta",
     "away": "betis",
     "comp": "LALIGA",
