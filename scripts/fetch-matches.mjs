@@ -16,7 +16,10 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-const COMPETITION = "PD"; // LaLiga
+const COMPETITIONS = [
+  { code: "PD", comp: "LALIGA" }, // LaLiga
+  { code: "CL", comp: "UCL" }, // UEFA Champions League
+];
 const SEASON = "2026";
 
 // football-data.org team name -> short key used by the page (must match
@@ -59,23 +62,23 @@ function slugify(name) {
     .replace(/[^a-z0-9]/g, "");
 }
 
+// European opponents are not in NAME_TO_KEY on purpose; the slug keeps them
+// identifiable and toFixture ships their display name alongside.
 function keyFor(teamName) {
-  if (NAME_TO_KEY[teamName]) return NAME_TO_KEY[teamName];
-  console.warn(`No key mapping for team "${teamName}", falling back to slug.`);
-  return slugify(teamName);
+  return NAME_TO_KEY[teamName] || slugify(teamName);
 }
 
-async function fetchMatches() {
-  const url = `https://api.football-data.org/v4/competitions/${COMPETITION}/matches?season=${SEASON}`;
+async function fetchMatches(code) {
+  const url = `https://api.football-data.org/v4/competitions/${code}/matches?season=${SEASON}`;
   const res = await fetch(url, { headers: { "X-Auth-Token": API_KEY } });
   if (!res.ok) {
-    throw new Error(`football-data.org request failed: ${res.status} ${res.statusText}`);
+    throw new Error(`football-data.org ${code} request failed: ${res.status} ${res.statusText}`);
   }
   const data = await res.json();
   return data.matches ?? [];
 }
 
-function toFixture(match) {
+function toFixture(match, comp) {
   const utc = new Date(match.utcDate);
   const date = utc.toISOString().slice(0, 10);
   const hasConfirmedTime = match.status !== "SCHEDULED" || match.utcDate.slice(11, 16) !== "00:00";
@@ -93,8 +96,13 @@ function toFixture(match) {
     time,
     home: keyFor(match.homeTeam.name),
     away: keyFor(match.awayTeam.name),
-    comp: "LALIGA",
+    comp,
   };
+
+  // European opponents have no entry in the page's TEAM_NAMES / LOGOS maps,
+  // so ship their display name along with the fixture.
+  if (!NAME_TO_KEY[match.homeTeam.name]) fixture.homeName = match.homeTeam.shortName || match.homeTeam.name;
+  if (!NAME_TO_KEY[match.awayTeam.name]) fixture.awayName = match.awayTeam.shortName || match.awayTeam.name;
 
   if (
     match.status === "FINISHED" &&
@@ -110,35 +118,45 @@ function toFixture(match) {
 // Manual entries are typed by hand, so their date/time can drift and they never
 // carry a score. Look each one up in the API feed (a given home/away pairing
 // happens once per season) and refresh it with the official data.
-function enrichManual(manual, matches) {
+function enrichManual(manual, entries) {
   const byPairing = new Map();
-  for (const match of matches) {
-    byPairing.set(`${keyFor(match.homeTeam.name)}|${keyFor(match.awayTeam.name)}`, match);
+  for (const entry of entries) {
+    const { match } = entry;
+    byPairing.set(`${keyFor(match.homeTeam.name)}|${keyFor(match.awayTeam.name)}`, entry);
   }
 
   let enriched = 0;
-  const result = manual.map((entry) => {
-    const match = byPairing.get(`${entry.home}|${entry.away}`);
-    if (!match) {
-      console.warn(`No API match for manual fixture ${entry.home} vs ${entry.away}.`);
-      return entry;
+  const result = manual.map((manualEntry) => {
+    const entry = byPairing.get(`${manualEntry.home}|${manualEntry.away}`);
+    if (!entry) {
+      console.warn(`No API match for manual fixture ${manualEntry.home} vs ${manualEntry.away}.`);
+      return manualEntry;
     }
     enriched++;
-    return { ...toFixture(match), manual: true };
+    return { ...toFixture(entry.match, entry.comp), manual: true };
   });
 
   return { manual: result, enriched };
 }
 
-async function main() {
-  const matches = await fetchMatches();
+// Levante and Villarreal home games in LaLiga, Villarreal home games in Europe.
+function isWantedHomeGame(match, comp) {
+  const homeKey = keyFor(match.homeTeam.name);
+  if (comp === "UCL") return homeKey === "villarreal";
+  return homeKey === "levante" || homeKey === "villarreal";
+}
 
-  const fixtures = matches
-    .filter((m) => {
-      const homeKey = keyFor(m.homeTeam.name);
-      return homeKey === "levante" || homeKey === "villarreal";
-    })
-    .map(toFixture);
+async function main() {
+  const entries = [];
+  for (const { code, comp } of COMPETITIONS) {
+    const matches = await fetchMatches(code);
+    for (const match of matches) entries.push({ match, comp });
+    console.log(`Fetched ${matches.length} ${code} matches.`);
+  }
+
+  const fixtures = entries
+    .filter(({ match, comp }) => isWantedHomeGame(match, comp))
+    .map(({ match, comp }) => toFixture(match, comp));
 
   const manualPath = path.join(ROOT, "data", "manual_matches.json");
   let manual = [];
@@ -148,7 +166,7 @@ async function main() {
     // no manual matches file, that's fine
   }
 
-  const { manual: manualFixtures, enriched } = enrichManual(manual, matches);
+  const { manual: manualFixtures, enriched } = enrichManual(manual, entries);
 
   const merged = [...fixtures, ...manualFixtures].sort((a, b) =>
     (a.date + (a.time === "TBD" ? "" : a.time)).localeCompare(

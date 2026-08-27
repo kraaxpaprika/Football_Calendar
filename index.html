@@ -408,9 +408,28 @@ const LOGOS = {"getafe": "iVBORw0KGgoAAAANSUhEUgAABdwAAAXcCAYAAAA4NUxkAAAAGXRFWH
 let FIXTURES = [];
 const TEAM_NAMES = {"levante": "Levante UD", "villarreal": "Villarreal CF", "betis": "Real Betis", "barcelona": "FC Barcelona", "athletic": "Athletic Club", "sevilla": "Sevilla FC", "atlmadrid": "Atl\u00e9tico Madrid", "elche": "Elche CF", "racingsantander": "Racing Santander", "alaves": "Deportivo Alav\u00e9s", "valencia": "Valencia CF", "espanyol": "RCD Espanyol", "realsociedad": "Real Sociedad", "malaga": "M\u00e1laga CF", "deportivocoruna": "RC Deportivo", "osasuna": "CA Osasuna", "rayovallecano": "Rayo Vallecano", "realmadrid": "Real Madrid", "getafe": "Getafe CF", "celta": "RC Celta"};
 
-function logoSrc(key){
-  return "data:image/png;base64," + (LOGOS[key] || "");
+function logoSrc(key, name){
+  if(LOGOS[key]) return "data:image/png;base64," + LOGOS[key];
+  return placeholderCrest(name || key);
 }
+
+// European opponents ship no crest, so draw their initials instead.
+function placeholderCrest(name){
+  const initials = String(name).trim().split(/\s+/).map(w => w[0]).join('').slice(0,3).toUpperCase();
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
+    '<circle cx="32" cy="32" r="30" fill="#08131d" stroke="#d4a94a" stroke-width="2"/>' +
+    '<text x="32" y="41" font-family="Space Mono, monospace" font-size="20" font-weight="700"' +
+    ' fill="#f3ede1" text-anchor="middle">' + initials + '</text></svg>';
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+
+// Fixtures from outside LaLiga carry their own display name.
+function teamName(fixture, side){
+  return (side === 'home' ? fixture.homeName : fixture.awayName)
+    || TEAM_NAMES[fixture[side]] || fixture[side];
+}
+
+const COMP_NAMES = { LALIGA: 'LaLiga EA Sports', UCL: 'UEFA Champions League' };
 
 const MONTHS = [
   {y:2026,m:8,label:"Agosto 2026",short:"AGO"},
@@ -515,14 +534,14 @@ function renderCalendar(){
     const crestFill = document.createElement('div');
     crestFill.className='crest-fill';
     const awayImg = document.createElement('img');
-    awayImg.src = logoSrc(fixture.away);
+    awayImg.src = logoSrc(fixture.away, teamName(fixture,'away'));
     crestFill.appendChild(awayImg);
     half.appendChild(crestFill);
 
     const badge = document.createElement('div');
     badge.className='home-badge';
     const homeImg = document.createElement('img');
-    homeImg.src = logoSrc(fixture.home);
+    homeImg.src = logoSrc(fixture.home, teamName(fixture,'home'));
     badge.appendChild(homeImg);
     half.appendChild(badge);
 
@@ -547,7 +566,7 @@ function renderCalendar(){
 
     const tip = document.createElement('div');
     tip.className='opp-name';
-    tip.textContent = (TEAM_NAMES[fixture.home]||fixture.home) + " vs " + (TEAM_NAMES[fixture.away]||fixture.away);
+    tip.textContent = teamName(fixture,'home') + " vs " + teamName(fixture,'away');
     half.appendChild(tip);
 
     half.onclick = ()=> openMatchModal(fixture);
@@ -577,14 +596,14 @@ function renderCalendar(){
       const crestFill = document.createElement('div');
       crestFill.className='crest-fill';
       const awayImg = document.createElement('img');
-      awayImg.src = logoSrc(fixture.away);
+      awayImg.src = logoSrc(fixture.away, teamName(fixture,'away'));
       crestFill.appendChild(awayImg);
       cell.appendChild(crestFill);
 
       const badge = document.createElement('div');
       badge.className='home-badge';
       const homeImg = document.createElement('img');
-      homeImg.src = logoSrc(fixture.home);
+      homeImg.src = logoSrc(fixture.home, teamName(fixture,'home'));
       badge.appendChild(homeImg);
       cell.appendChild(badge);
 
@@ -609,7 +628,7 @@ function renderCalendar(){
 
       const tip = document.createElement('div');
       tip.className='opp-name';
-      tip.textContent = (TEAM_NAMES[fixture.home]||fixture.home) + " vs " + (TEAM_NAMES[fixture.away]||fixture.away);
+      tip.textContent = teamName(fixture,'home') + " vs " + teamName(fixture,'away');
       cell.appendChild(tip);
 
       cell.onclick = ()=> openMatchModal(fixture);
@@ -629,17 +648,17 @@ function renderAll(){
 }
 
 function openMatchModal(fixture){
-  const homeName = TEAM_NAMES[fixture.home] || fixture.home;
-  const awayName = TEAM_NAMES[fixture.away] || fixture.away;
+  const homeName = teamName(fixture, 'home');
+  const awayName = teamName(fixture, 'away');
 
   const crests = document.getElementById('modalCrests');
   crests.innerHTML = "";
   const homeImg = document.createElement('img');
-  homeImg.src = logoSrc(fixture.home);
+  homeImg.src = logoSrc(fixture.home, teamName(fixture,'home'));
   const vs = document.createElement('span');
   vs.textContent = 'VS';
   const awayImg = document.createElement('img');
-  awayImg.src = logoSrc(fixture.away);
+  awayImg.src = logoSrc(fixture.away, teamName(fixture,'away'));
   crests.appendChild(homeImg);
   crests.appendChild(vs);
   crests.appendChild(awayImg);
@@ -657,7 +676,7 @@ function openMatchModal(fixture){
   document.getElementById('modalMeta').innerHTML =
     `<div>${dateFormatted}</div>` +
     `<div><b>${timeLine}</b></div>` +
-    `<div>${fixture.comp === 'LALIGA' ? 'LaLiga EA Sports' : fixture.comp}</div>` +
+    `<div>${COMP_NAMES[fixture.comp] || fixture.comp}</div>` +
     (fixture.manual ? '<div>★ Añadido manualmente</div>' : '') +
     (isPastFixture(fixture) ? '<div>✓ Partido finalizado</div>' : '');
 
