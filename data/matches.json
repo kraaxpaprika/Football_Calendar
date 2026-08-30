@@ -59,6 +59,14 @@
     "comp": "LALIGA"
   },
   {
+    "date": "2026-10-13",
+    "time": "21:00",
+    "home": "villarreal",
+    "away": "sscnapoli",
+    "comp": "UCL",
+    "awayName": "Napoli"
+  },
+  {
     "date": "2026-10-18",
     "time": "TBD",
     "home": "villarreal",
@@ -88,6 +96,14 @@
     "comp": "LALIGA"
   },
   {
+    "date": "2026-11-03",
+    "time": "21:00",
+    "home": "villarreal",
+    "away": "parissaintgermainfc",
+    "comp": "UCL",
+    "awayName": "PSG"
+  },
+  {
     "date": "2026-11-08",
     "time": "TBD",
     "home": "villarreal",
@@ -114,6 +130,14 @@
     "home": "villarreal",
     "away": "realsociedad",
     "comp": "LALIGA"
+  },
+  {
+    "date": "2026-12-08",
+    "time": "18:45",
+    "home": "villarreal",
+    "away": "sabahfk",
+    "comp": "UCL",
+    "awayName": "Sabah FK"
   },
   {
     "date": "2026-12-13",
@@ -156,6 +180,14 @@
     "home": "levante",
     "away": "espanyol",
     "comp": "LALIGA"
+  },
+  {
+    "date": "2027-01-27",
+    "time": "21:00",
+    "home": "villarreal",
+    "away": "manchesterunitedfc",
+    "comp": "UCL",
+    "awayName": "Man United"
   },
   {
     "date": "2027-01-31",
