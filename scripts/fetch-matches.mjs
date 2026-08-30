@@ -146,6 +146,38 @@ function isWantedHomeGame(match, comp) {
   return homeKey === "levante" || homeKey === "villarreal";
 }
 
+// The API is the source of truth for everything except a score it has already
+// reported once. A transient feed glitch (status not back to FINISHED yet, a
+// null fullTime) would otherwise silently wipe a result the page had been
+// showing, so a score already on disk survives a feed that no longer has one.
+async function readPrevious(outPath) {
+  try {
+    return JSON.parse(await readFile(outPath, "utf-8"));
+  } catch {
+    return [];
+  }
+}
+
+// A given home/away pairing happens once per season, same key enrichManual uses.
+const pairingOf = (fixture) => `${fixture.home}|${fixture.away}`;
+
+function keepKnownScores(previous, fixtures) {
+  const known = new Map();
+  for (const fixture of previous) {
+    if (fixture.score) known.set(pairingOf(fixture), fixture.score);
+  }
+
+  return fixtures.map((fixture) => {
+    if (fixture.score) return fixture;
+    const score = known.get(pairingOf(fixture));
+    if (!score) return fixture;
+    console.warn(
+      `Feed has no score for ${fixture.home} vs ${fixture.away}; keeping ${score}.`
+    );
+    return { ...fixture, score };
+  });
+}
+
 async function main() {
   const entries = [];
   for (const { code, comp, required } of COMPETITIONS) {
@@ -177,13 +209,14 @@ async function main() {
 
   const { manual: manualFixtures, enriched } = enrichManual(manual, entries);
 
-  const merged = [...fixtures, ...manualFixtures].sort((a, b) =>
+  const sorted = [...fixtures, ...manualFixtures].sort((a, b) =>
     (a.date + (a.time === "TBD" ? "" : a.time)).localeCompare(
       b.date + (b.time === "TBD" ? "" : b.time)
     )
   );
 
   const outPath = path.join(ROOT, "data", "matches.json");
+  const merged = keepKnownScores(await readPrevious(outPath), sorted);
   await writeFile(outPath, JSON.stringify(merged, null, 2) + "\n", "utf-8");
   console.log(
     `Wrote ${fixtures.length} API fixtures + ${manual.length} manual matches ` +
