@@ -139,7 +139,8 @@
     "home": "villarreal",
     "away": "sabahfk",
     "comp": "UCL",
-    "awayName": "Sabah FK"
+    "awayName": "Sabah FK",
+    "awayCrest": "https://crests.football-data.org/10233.png"
   },
   {
     "date": "2026-12-13",
