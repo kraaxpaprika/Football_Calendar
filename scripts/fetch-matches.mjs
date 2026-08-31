@@ -99,10 +99,16 @@ function toFixture(match, comp) {
     comp,
   };
 
-  // European opponents have no entry in the page's TEAM_NAMES / LOGOS maps,
-  // so ship their display name along with the fixture.
-  if (!NAME_TO_KEY[match.homeTeam.name]) fixture.homeName = match.homeTeam.shortName || match.homeTeam.name;
-  if (!NAME_TO_KEY[match.awayTeam.name]) fixture.awayName = match.awayTeam.shortName || match.awayTeam.name;
+  // European opponents have no entry in the page's TEAM_NAMES / LOGOS maps, so
+  // ship their display name and crest URL along with the fixture.
+  if (!NAME_TO_KEY[match.homeTeam.name]) {
+    fixture.homeName = match.homeTeam.shortName || match.homeTeam.name;
+    if (match.homeTeam.crest) fixture.homeCrest = match.homeTeam.crest;
+  }
+  if (!NAME_TO_KEY[match.awayTeam.name]) {
+    fixture.awayName = match.awayTeam.shortName || match.awayTeam.name;
+    if (match.awayTeam.crest) fixture.awayCrest = match.awayTeam.crest;
+  }
 
   if (
     match.status === "FINISHED" &&

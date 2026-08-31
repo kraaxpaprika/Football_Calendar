@@ -64,7 +64,8 @@
     "home": "villarreal",
     "away": "sscnapoli",
     "comp": "UCL",
-    "awayName": "Napoli"
+    "awayName": "Napoli",
+    "awayCrest": "https://crests.football-data.org/113.png"
   },
   {
     "date": "2026-10-18",
@@ -101,7 +102,8 @@
     "home": "villarreal",
     "away": "parissaintgermainfc",
     "comp": "UCL",
-    "awayName": "PSG"
+    "awayName": "PSG",
+    "awayCrest": "https://crests.football-data.org/524.png"
   },
   {
     "date": "2026-11-08",
@@ -187,7 +189,8 @@
     "home": "villarreal",
     "away": "manchesterunitedfc",
     "comp": "UCL",
-    "awayName": "Man United"
+    "awayName": "Man United",
+    "awayCrest": "https://crests.football-data.org/66.png"
   },
   {
     "date": "2027-01-31",

@@ -485,12 +485,22 @@ const LOGOS = {"getafe": "iVBORw0KGgoAAAANSUhEUgAABdwAAAXcCAYAAAA4NUxkAAAAGXRFWH
 let FIXTURES = [];
 const TEAM_NAMES = {"levante": "Levante UD", "villarreal": "Villarreal CF", "betis": "Real Betis", "barcelona": "FC Barcelona", "athletic": "Athletic Club", "sevilla": "Sevilla FC", "atlmadrid": "Atl\u00e9tico Madrid", "elche": "Elche CF", "racingsantander": "Racing Santander", "alaves": "Deportivo Alav\u00e9s", "valencia": "Valencia CF", "espanyol": "RCD Espanyol", "realsociedad": "Real Sociedad", "malaga": "M\u00e1laga CF", "deportivocoruna": "RC Deportivo", "osasuna": "CA Osasuna", "rayovallecano": "Rayo Vallecano", "realmadrid": "Real Madrid", "getafe": "Getafe CF", "celta": "RC Celta"};
 
-function logoSrc(key, name){
+function logoSrc(fixture, side){
+  const key = fixture[side];
   if(LOGOS[key]) return "data:image/png;base64," + LOGOS[key];
-  return placeholderCrest(name || key);
+  // European opponents carry a remote crest URL from the feed.
+  return (side === 'home' ? fixture.homeCrest : fixture.awayCrest)
+    || placeholderCrest(teamName(fixture, side));
 }
 
-// European opponents ship no crest, so draw their initials instead.
+// Points an <img> at the fixture's crest, falling back to initials if the
+// remote crest fails to load.
+function setLogo(img, fixture, side){
+  img.onerror = () => { img.onerror = null; img.src = placeholderCrest(teamName(fixture, side)); };
+  img.src = logoSrc(fixture, side);
+}
+
+// Opponents with neither an embedded nor a remote crest get their initials.
 function placeholderCrest(name){
   const initials = String(name).trim().split(/\s+/).map(w => w[0]).join('').slice(0,3).toUpperCase();
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' +
@@ -654,14 +664,14 @@ function renderCalendar(){
     const crestFill = document.createElement('div');
     crestFill.className='crest-fill';
     const awayImg = document.createElement('img');
-    awayImg.src = logoSrc(fixture.away, teamName(fixture,'away'));
+    setLogo(awayImg, fixture, 'away');
     crestFill.appendChild(awayImg);
     half.appendChild(crestFill);
 
     const badge = document.createElement('div');
     badge.className='home-badge';
     const homeImg = document.createElement('img');
-    homeImg.src = logoSrc(fixture.home, teamName(fixture,'home'));
+    setLogo(homeImg, fixture, 'home');
     badge.appendChild(homeImg);
     half.appendChild(badge);
 
@@ -716,14 +726,14 @@ function renderCalendar(){
       const crestFill = document.createElement('div');
       crestFill.className='crest-fill';
       const awayImg = document.createElement('img');
-      awayImg.src = logoSrc(fixture.away, teamName(fixture,'away'));
+      setLogo(awayImg, fixture, 'away');
       crestFill.appendChild(awayImg);
       cell.appendChild(crestFill);
 
       const badge = document.createElement('div');
       badge.className='home-badge';
       const homeImg = document.createElement('img');
-      homeImg.src = logoSrc(fixture.home, teamName(fixture,'home'));
+      setLogo(homeImg, fixture, 'home');
       badge.appendChild(homeImg);
       cell.appendChild(badge);
 
@@ -775,11 +785,11 @@ function openMatchModal(fixture){
   const crests = document.getElementById('modalCrests');
   crests.innerHTML = "";
   const homeImg = document.createElement('img');
-  homeImg.src = logoSrc(fixture.home, teamName(fixture,'home'));
+  setLogo(homeImg, fixture, 'home');
   const vs = document.createElement('span');
   vs.textContent = 'VS';
   const awayImg = document.createElement('img');
-  awayImg.src = logoSrc(fixture.away, teamName(fixture,'away'));
+  setLogo(awayImg, fixture, 'away');
   crests.appendChild(homeImg);
   crests.appendChild(vs);
   crests.appendChild(awayImg);
