@@ -25,28 +25,28 @@
   },
   {
     "date": "2026-09-13",
-    "time": "TBD",
-    "home": "villarreal",
-    "away": "betis",
-    "comp": "LALIGA"
-  },
-  {
-    "date": "2026-09-13",
-    "time": "TBD",
+    "time": "16:15",
     "home": "levante",
     "away": "barcelona",
     "comp": "LALIGA"
   },
   {
+    "date": "2026-09-14",
+    "time": "21:00",
+    "home": "villarreal",
+    "away": "betis",
+    "comp": "LALIGA"
+  },
+  {
     "date": "2026-09-16",
-    "time": "TBD",
+    "time": "21:30",
     "home": "levante",
     "away": "athletic",
     "comp": "LALIGA"
   },
   {
     "date": "2026-09-20",
-    "time": "TBD",
+    "time": "18:30",
     "home": "villarreal",
     "away": "levante",
     "comp": "LALIGA"
