@@ -215,7 +215,20 @@ async function main() {
 
   const { manual: manualFixtures, enriched } = enrichManual(manual, entries);
 
-  const sorted = [...fixtures, ...manualFixtures].sort((a, b) =>
+  // Fixtures the calendar owner is not attending: dropped from the output even
+  // though the feed keeps reporting them.
+  const excludedPath = path.join(ROOT, "data", "excluded_matches.json");
+  let excluded = [];
+  try {
+    excluded = JSON.parse(await readFile(excludedPath, "utf-8"));
+  } catch {
+    // no exclusions file, that's fine
+  }
+  const excludedPairings = new Set(excluded.map(pairingOf));
+
+  const sorted = [...fixtures, ...manualFixtures]
+    .filter((fixture) => !excludedPairings.has(pairingOf(fixture)))
+    .sort((a, b) =>
     (a.date + (a.time === "TBD" ? "" : a.time)).localeCompare(
       b.date + (b.time === "TBD" ? "" : b.time)
     )
@@ -225,8 +238,9 @@ async function main() {
   const merged = keepKnownScores(await readPrevious(outPath), sorted);
   await writeFile(outPath, JSON.stringify(merged, null, 2) + "\n", "utf-8");
   console.log(
-    `Wrote ${fixtures.length} API fixtures + ${manual.length} manual matches ` +
-      `(${enriched} refreshed from the API) to ${outPath}`
+    `Wrote ${sorted.length} fixtures from ${fixtures.length} API + ` +
+      `${manual.length} manual matches (${enriched} refreshed from the API, ` +
+      `${excluded.length} excluded) to ${outPath}`
   );
 
   const metaPath = path.join(ROOT, "data", "meta.json");
