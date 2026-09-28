@@ -64,14 +64,6 @@
     "comp": "LALIGA"
   },
   {
-    "date": "2026-10-25",
-    "time": "16:15",
-    "home": "celta",
-    "away": "betis",
-    "comp": "LALIGA",
-    "manual": true
-  },
-  {
     "date": "2026-11-01",
     "time": "TBD",
     "home": "villarreal",
