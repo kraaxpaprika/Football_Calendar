@@ -41,6 +41,22 @@
     "score": "3-1"
   },
   {
+    "date": "2026-10-04",
+    "time": "14:15",
+    "home": "huesca",
+    "away": "europa",
+    "comp": "PRIMERAFED",
+    "manual": true
+  },
+  {
+    "date": "2026-10-04",
+    "time": "21:00",
+    "home": "realzaragoza",
+    "away": "teruel",
+    "comp": "PRIMERAFED",
+    "manual": true
+  },
+  {
     "date": "2026-10-12",
     "time": "21:00",
     "home": "levante",
