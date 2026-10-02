@@ -836,7 +836,9 @@ Promise.all([
   fetch('data/manual_matches.json', {cache: 'no-store'}).then(r => r.json()).catch(() => [])
 ])
   .then(([matches, manual]) => {
-    FIXTURES = [...matches, ...manual];
+    const key = f => `${f.date}|${f.home}|${f.away}`;
+    const seen = new Set(matches.map(key));
+    FIXTURES = [...matches, ...manual.filter(f => !seen.has(key(f)))];
     renderAll();
   })
   .catch(err => {
