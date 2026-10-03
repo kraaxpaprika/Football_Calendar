@@ -665,14 +665,14 @@ function renderCalendar(){
     const crestFill = document.createElement('div');
     crestFill.className='crest-fill';
     const awayImg = document.createElement('img');
-    setLogo(awayImg, fixture, 'away');
+    setLogo(awayImg, fixture, fixture.manual ? 'home' : 'away');
     crestFill.appendChild(awayImg);
     half.appendChild(crestFill);
 
     const badge = document.createElement('div');
     badge.className='home-badge';
     const homeImg = document.createElement('img');
-    setLogo(homeImg, fixture, 'home');
+    setLogo(homeImg, fixture, fixture.manual ? 'away' : 'home');
     badge.appendChild(homeImg);
     half.appendChild(badge);
 
@@ -727,14 +727,14 @@ function renderCalendar(){
       const crestFill = document.createElement('div');
       crestFill.className='crest-fill';
       const awayImg = document.createElement('img');
-      setLogo(awayImg, fixture, 'away');
+      setLogo(awayImg, fixture, fixture.manual ? 'home' : 'away');
       crestFill.appendChild(awayImg);
       cell.appendChild(crestFill);
 
       const badge = document.createElement('div');
       badge.className='home-badge';
       const homeImg = document.createElement('img');
-      setLogo(homeImg, fixture, 'home');
+      setLogo(homeImg, fixture, fixture.manual ? 'away' : 'home');
       badge.appendChild(homeImg);
       cell.appendChild(badge);
 
