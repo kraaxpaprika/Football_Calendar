@@ -1,3 +1,12 @@
 [
-  {"home": "levante", "away": "barcelona", "note": "gidilmiyor"}
+  {
+    "home": "levante",
+    "away": "barcelona",
+    "note": "gidilmiyor"
+  },
+  {
+    "home": "levante",
+    "away": "sevilla",
+    "note": "bilet satildi"
+  }
 ]
