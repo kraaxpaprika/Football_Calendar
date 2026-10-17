@@ -8,5 +8,10 @@
     "home": "levante",
     "away": "sevilla",
     "note": "bilet satildi"
+  },
+  {
+    "home": "levante",
+    "away": "athletic",
+    "note": "gidilmiyor"
   }
 ]
