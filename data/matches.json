@@ -106,7 +106,8 @@
     "time": "21:00",
     "home": "levante",
     "away": "elche",
-    "comp": "LALIGA"
+    "comp": "LALIGA",
+    "score": "1-1"
   },
   {
     "date": "2026-11-27",
@@ -132,15 +133,15 @@
     "awayCrest": "https://crests.football-data.org/10233.png"
   },
   {
-    "date": "2026-12-13",
-    "time": "TBD",
+    "date": "2026-12-12",
+    "time": "14:00",
     "home": "levante",
     "away": "alaves",
     "comp": "LALIGA"
   },
   {
-    "date": "2026-12-13",
-    "time": "TBD",
+    "date": "2026-12-12",
+    "time": "16:15",
     "home": "villarreal",
     "away": "rayovallecano",
     "comp": "LALIGA"
